@@ -53,6 +53,7 @@ class Topic(Base):
 class Article(Base):
     __tablename__ = 'article'
 
+    # TODO: validate links
     title = Column(String(80), nullable=False)
     id = Column(Integer, primary_key=True)
     description = Column(String(500))
