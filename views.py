@@ -65,13 +65,19 @@ def showTopic(topic_id):
     topic = session.query(Topic).filter_by(id=topic_id).one()
     topics = session.query(Topic).order_by(Topic.name)
     articles = session.query(Article).filter_by(topic_id=topic_id).all()
-    if login_session['user_id'] == topic.user_id:
-        return render_template('topic.html', topic=topic, topics=topics,
-                               articles=articles, topic_id=topic_id)
+    if 'username' in login_session:
+        if login_session['user_id'] == topic.user_id:
+            return render_template('topic.html', topic=topic, topics=topics,
+                                   articles=articles, topic_id=topic_id)
+        else:
+            # If user is not owner of the topic, hide edit and delete buttons
+            return render_template('publicTopic.html', topic=topic,
+                                   topics=topics, articles=articles,
+                                   topic_id=topic_id)
     else:
-        # If user is not the owner of the topic, hide edit and delete buttons
-        return render_template('publicTopic.html', topic=topic, topics=topics,
-                               articles=articles, topic_id=topic_id)
+        return render_template('publicTopic.html', topic=topic,
+                                   topics=topics, articles=articles,
+                                   topic_id=topic_id)
 
 
 # Edit topic
