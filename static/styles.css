@@ -207,3 +207,7 @@ body {
     display: inline-block;
     clear: both;
 }
+
+.user-articles-title {
+  padding-left: 25px;
+}
