@@ -27,16 +27,16 @@
 
 <body>
   <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
-    <a class="navbar-brand col-md-3 mr-0" href="{{url_for('showTopics')}}">
-      css overflow</a>
+    <a class="navbar-brand mx-3" href="{{url_for('showTopics')}}">
+      <img class="" src="/static/favicon-w.png" height="20px"> css overflow</a>
     <ul class="navbar-nav px-3">
-      <li class="nav-item text-nowrap">
+      <li class="nav-item">
         {%if 'username' not in session %}
-        <a class="nav-link" href="{{url_for('showLogin')}}">Sign in
+        <a class="nav-link my-lg-0" href="{{url_for('showLogin')}}">Sign in
         </a> 
         {% else %}
-        <a class="nav-link" href="{{url_for('gdisconnect')}}">
-          {{session["username"]}} (Logout)</a> 
+        <a class="nav-link my-lg-0" href="{{url_for('gdisconnect')}}">
+          <span class="user-name">{{session["username"]}}</span> (Logout)</a> 
         {% endif %}
       </li>
     </ul>

@@ -1,5 +1,5 @@
 {% extends "main.html" %} {% block content %} {% include "sidebar.html" %}
-<main role="main" class="col-md-9 ml-sm-auto col-lg-9 pt-3 px-4">
+<main role="main" class="col-md-9 col-lg-9 pt-3 px-3 kn-main">
   <!-- Main section -->
   <h3 class="topic-title">
     <span>{{topic.name}}</span>
@@ -10,6 +10,9 @@
 
   <div>
     <ul class="list-group list-group-flush">
+      {%if not articles %}
+      <p class="kn-message">No articles yet.</p>
+      {% else %}
       {% for article in articles %}
       <li class="list-group-item">
         <a class="text-dark" href="{{url_for('showArticle', topic_id=topic_id, 
@@ -17,7 +20,7 @@
           <span class="topic-title-icon" data-feather="file-text"></span> 
             {{article.title}}</a>
       </li>
-      {% endfor %}
+      {% endfor %} {% endif %}
     </ul>
   </div>
 </main>

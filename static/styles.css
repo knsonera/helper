@@ -32,6 +32,64 @@ body {
   overflow-y: auto; /* Scrollable contents if viewport is shorter than content. */
 }
 
+/*
+ * Responsive
+ */
+
+@media (max-width: 420px) {
+  .user-name {
+    display:none;
+  }
+}
+
+@media (max-width: 685px) and (min-width: 577px) {
+  .kn-main {
+    margin-left: 170px;
+  }
+}
+
+@media (max-width: 576px) {
+  .kn-sidebar {
+    display: block;
+    height: 200px;
+  }
+  .kn-main {
+    margin-top: 140px;
+    display: block;
+    clear: both;
+  }
+  .topic-title, .article-title {
+    margin-top: 15px;
+    font-size: 18px;
+  }
+  .profile-image {
+    margin-top: 10px;
+    display: none;
+  }
+  .user-articles {
+    margin-top: -20px;
+    margin-left: -10px;
+  }
+  .user-information {
+    margin-left: 5px;
+  }
+  .kn-message {
+    margin-left: 25px;
+  }
+}
+
+@media (max-width: 768px) and (min-width: 686px) {
+  .kn-main {
+    margin-left: 190px;
+  }
+}
+
+@media (min-width: 769px) {
+  .kn-main {
+    margin-left: auto;
+  }
+}
+
 .sidebar .nav-link {
   font-weight: 500;
   color: #333;
@@ -64,7 +122,6 @@ body {
   padding-top: .75rem;
   padding-bottom: .75rem;
   font-size: 1rem;
-  background-color: rgba(20, 150, 180, .55);
   box-shadow: inset -1px 0 0 rgba(100, 40, 120, .55);
 }
 
@@ -136,7 +193,17 @@ body {
 
 .topic-title {
     display: inline-block;
+    margin-left: 15px;
 }
+
+.article-title {
+    display: inline-block;
+    margin-left: 0px;
+}
+
+.kn-message {
+    margin-left: 15px;
+  }
 
 .topic-title-icon {
     vertical-align: middle;
@@ -209,5 +276,5 @@ body {
 }
 
 .user-articles-title {
-  padding-left: 25px;
+  padding-left: 15px;
 }
