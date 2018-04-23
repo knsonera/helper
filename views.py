@@ -159,11 +159,15 @@ def showArticle(topic_id, article_id):
     article = session.query(Article).filter_by(id=article_id).one()
     author = session.query(User).filter_by(id=article.user_id).one()
     author_name = author.name
-    if login_session['user_id'] == article.user_id:
-        return render_template('article.html', article=article, topic=topic,
-                               topics=topics)
+    if 'username' in login_session:
+        if login_session['user_id'] == article.user_id:
+            return render_template('article.html', article=article, topic=topic,
+                                   topics=topics)
+        else:
+            # hide edit and delete buttons if user is author of this article
+            return render_template('publicArticle.html', article=article,
+                                   topic=topic, topics=topics, author=author_name)
     else:
-        # hide edit and delete buttons if user is author of this article
         return render_template('publicArticle.html', article=article,
                                topic=topic, topics=topics, author=author_name)
 
