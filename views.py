@@ -161,12 +161,13 @@ def showArticle(topic_id, article_id):
     author_name = author.name
     if 'username' in login_session:
         if login_session['user_id'] == article.user_id:
-            return render_template('article.html', article=article, topic=topic,
-                                   topics=topics)
+            return render_template('article.html', article=article, 
+                                   topic=topic, topics=topics)
         else:
             # hide edit and delete buttons if user is author of this article
             return render_template('publicArticle.html', article=article,
-                                   topic=topic, topics=topics, author=author_name)
+                                   topic=topic, topics=topics, 
+                                   author=author_name)
     else:
         return render_template('publicArticle.html', article=article,
                                topic=topic, topics=topics, author=author_name)
