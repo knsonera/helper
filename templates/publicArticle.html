@@ -1,0 +1,24 @@
+{% extends "main.html" %} {% block content %} {% include "sidebar.html" %}
+<main role="main" class="col-md-9 ml-sm-auto col-lg-9 pt-3 px-4">
+  <!-- Main section -->
+
+  <div class="blog-post">
+    <h3 class="topic-title">
+      <span>{{article.title}}</span>
+    </h3>
+    <p class="blog-post-meta">Created by <span class="text-success">{{authorName}}</span></p>
+
+    <p>{{article.description}}
+      <a href="{{article.link}}">Go to source
+                <span class="topic-title-icon" data-feather="external-link"></span>
+              </a>
+    </p>
+    <button type="button" class="btn btn-secondary" id="article-preview-button"> Preview</button>
+    <a role="button" class="btn btn-secondary" href="{{url_for('showTopic', topic_id=topic.id)}}">Back to topic</a>
+    <br>
+    <object class="article-preview" type="text/html" id="article-preview" data="{{article.link}}">
+            </object>
+  </div>
+  <!-- /.blog-post -->
+</main>
+{% endblock %}

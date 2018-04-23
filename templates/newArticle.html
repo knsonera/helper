@@ -1,0 +1,27 @@
+{% extends "main.html" %} {% block content %} {% include "sidebar.html" %}
+<main role="main" class="col-md-9 ml-sm-auto col-lg-9 pt-3 px-4">
+    <!-- Main section -->
+    <h3 class="topic-title">
+        <span>New article</span>
+        </h6>
+        <p></p>
+        <form action="#" method="post">
+            <div class="form-group">
+                <label for="newArticleInput">Title</label>
+                <input type="text" name="name" class="form-control" id="newArticleName" placeholder="Article Name">
+            </div>
+            <div class="form-group">
+                <label for="newArticleInput">Link</label>
+                <input type="text" name="link" class="form-control" id="newArticleLink" placeholder="Article Link">
+            </div>
+            <div class="form-group">
+                <label for="newArticleDesc">Description</label>
+                <textarea class="form-control" name="description" id="newArticleDesc" rows="3"></textarea>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-dark">Create</button>
+                <a role="button" class="btn btn-secondary" href="{{url_for('showTopic', topic_id=topic_id)}}">Cancel</a>
+            </div>
+        </form>
+</main>
+{% endblock %}

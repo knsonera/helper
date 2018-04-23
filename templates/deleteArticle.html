@@ -1,0 +1,15 @@
+{% extends "main.html" %} {% block content %} {% include "sidebar.html" %}
+<main role="main" class="col-md-9 ml-sm-auto col-lg-9 pt-3 px-4">
+  <!-- Main section -->
+  <h3 class="topic-title">
+    <span>Are you sure you want to delete this article ({{article.title}})?</span>
+    </h6>
+    <p></p>
+    <form action="#" method="post">
+      <div>
+        <button type="submit" class="btn btn-dark">Delete</button>
+        <a role="button" class="btn btn-secondary" href="{{url_for('showArticle', topic_id=topic.id, article_id=article.id)}}">Cancel</a>
+      </div>
+    </form>
+</main>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "main.html" %} {% block content %} {% include "sidebar.html" %}
+
+<main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
+
+  <div class="text-center">
+    <h1 class="h4 mb-3 font-weight-normal" id="signinTitle">Please sign in</h1>
+    <!-- GOOGLE PLUS SIGN IN-->
+
+    <div id="signinButton">
+      <span class="g-signin" data-scope="openid email" data-clientid="690760819851-gltb687ucl861ua8325v0muhnk69sgj5.apps.googleusercontent.com"
+        data-redirecturi="postmessage" data-accesstype="offline" data-cookiepolicy="single_host_origin" data-callback="signInCallback"
+        data-approvalprompt="force">
+              </span>
+    </div>
+    <div id="result"></div>
+    <p class="mt-5 mb-3 text-muted" id="signinCopy">&copy; 2018</p>
+  </div>
+</main>
+{% endblock %}

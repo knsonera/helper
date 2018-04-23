@@ -1,0 +1,31 @@
+{% extends "main.html" %} {% block content %} {% include "sidebar.html" %}
+<main role="main" class="col-md-9 ml-sm-auto col-lg-9 pt-3 px-4">
+    <!-- Main section -->
+    <h3 class="topic-title">
+        <span>Edit article: {{article.title}}</span>
+        </h6>
+        <p></p>
+        <form action="#" method="post">
+            <div class="form-group">
+                <label for="editArticleInput">Title</label>
+                <input type="text" name="title" class="form-control" id="editArticleName" placeholder="{{article.title}}">
+            </div>
+            <div class="form-group">
+                <label for="editArticleInput">Link</label>
+                <input type="text" name="link" class="form-control" id="editArticleLink" placeholder="{{article.link}}">
+            </div>
+            <div class="form-group">
+                <label for="editArticleDesc">Description</label>
+                <textarea class="form-control" name="description" id="editArticleDesc" rows="3"></textarea>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-dark">Edit</button>
+                <a role="button" class="btn btn-secondary" href="{{url_for('showArticle', topic_id=topic_id, article_id=article.id)}}">Cancel</a>
+            </div>
+        </form>
+
+        <div>
+
+        </div>
+</main>
+{% endblock %}

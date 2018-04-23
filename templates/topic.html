@@ -1,0 +1,30 @@
+{% extends "main.html" %} {% block content %} {% include "sidebar.html" %}
+<main role="main" class="col-md-9 ml-sm-auto col-lg-9 pt-3 px-4">
+  <!-- Main section -->
+  <h3 class="topic-title">
+    <span>{{topic.name}}</span>
+    <a class="text-muted" href="{{url_for('editTopic', topic_id=topic_id)}}">
+      <span class="topic-title-icon" data-feather="edit"></span>
+    </a>
+    <a class="text-muted" href="{{url_for('deleteTopic', topic_id=topic_id)}}">
+      <span class="topic-title-icon" data-feather="trash-2"></span>
+    </a>
+    <span class="divider-vertical"></span>
+    <a class="text-muted" href="{{url_for('newArticle', topic_id=topic_id)}}">
+      <span class="topic-title-icon" data-feather="plus-circle"></span>
+    </a>
+  </h3>
+
+  <div>
+    <ul class="list-group list-group-flush">
+      {%if not articles %}
+      <p>No articles yet.</p>
+      {% else %} {% for article in articles %}
+      <li class="list-group-item">
+        <a class="text-dark" href="{{url_for('showArticle', topic_id=topic_id, article_id=article.id)}}">&#x2022 {{article.title}}</a>
+      </li>
+      {% endfor %} {% endif %}
+    </ul>
+  </div>
+</main>
+{% endblock %}
