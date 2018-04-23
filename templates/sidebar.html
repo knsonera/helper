@@ -4,16 +4,19 @@
         <ul class="nav flex-column">
             {% for topic in topics %}
             <li class="nav-item">
-                <a class="nav-link" href="{{url_for('showTopic', topic_id=topic.id)}}">
+                <a class="nav-link" href="{{url_for('showTopic', 
+                    topic_id=topic.id)}}">
                   {{topic.name}}
                 </a>
             </li>
             {% endfor %}
         </ul>
         {% endif %}
-        <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
+        <h6 class="sidebar-heading d-flex justify-content-between 
+            align-items-center px-3 mt-4 mb-1 text-muted">
             <span>Create new topic</span>
-            <a class="d-flex align-items-center text-muted" href="{{url_for('newTopic')}}">
+            <a class="d-flex align-items-center text-muted" 
+                href="{{url_for('newTopic')}}">
                 <span data-feather="plus-circle"></span>
             </a>
         </h6>

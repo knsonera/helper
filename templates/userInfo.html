@@ -4,7 +4,8 @@
     <div class="container">
         <div class="row">
             <div class="col">
-                <img class="rounded float-left profile-image" src="{{picture}}">
+                <img class="rounded float-left profile-image" 
+                    src="{{picture}}">
                 <h3 class="topic-title">
                     <span>Welcome {{name}}</span>
                 </h3>
@@ -16,16 +17,23 @@
         <div class="row">
             <div class="col">
                 <h4 class="topic-title">
-                    <span>My articles</span>
+                    <span class="user-articles-title">My articles</span>
                 </h4>
                 <ul class="list-group list-group-flush">
                     {%if not articles %}
                     <p>No articles yet.</p>
                     {% else %} {% for article in articles %}
                     <li class="list-group-item">
-                        <a class="text-dark" href="{{url_for('showArticle', topic_id=article.topic_id, article_id=article.id)}}">&#x2022 {{article.title}}</a>
+                        <a class="text-dark" href="{{url_for('showArticle', 
+                            topic_id=article.topic_id, 
+                            article_id=article.id)}}">
+                            <span class="topic-title-icon" 
+                                data-feather="file-text"></span> 
+                            {{article.title}}
+                        </a>
                     </li>
-                    {% endfor %} {% endif %}
+                    {% endfor %} 
+                    {% endif %}
                 </ul>
             </div>
         </div>

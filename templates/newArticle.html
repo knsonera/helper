@@ -8,19 +8,26 @@
         <form action="#" method="post">
             <div class="form-group">
                 <label for="newArticleInput">Title</label>
-                <input type="text" name="name" class="form-control" id="newArticleName" placeholder="Article Name">
+                <input type="text" name="name" class="form-control" 
+                    id="newArticleName" placeholder="Article Name" 
+                    maxlength=80 required>
             </div>
             <div class="form-group">
                 <label for="newArticleInput">Link</label>
-                <input type="text" name="link" class="form-control" id="newArticleLink" placeholder="Article Link">
+                <input type="url" name="link" class="form-control" 
+                    id="newArticleLink" placeholder="Article Link" 
+                    maxlength=250 required>
             </div>
             <div class="form-group">
                 <label for="newArticleDesc">Description</label>
-                <textarea class="form-control" name="description" id="newArticleDesc" rows="3"></textarea>
+                <textarea class="form-control" name="description" 
+                    id="newArticleDesc" rows="3" maxlength=500></textarea>
             </div>
             <div>
                 <button type="submit" class="btn btn-dark">Create</button>
-                <a role="button" class="btn btn-secondary" href="{{url_for('showTopic', topic_id=topic_id)}}">Cancel</a>
+                <a role="button" class="btn btn-secondary" 
+                    href="{{url_for('showTopic', topic_id=topic_id)}}">
+                    Cancel</a>
             </div>
         </form>
 </main>

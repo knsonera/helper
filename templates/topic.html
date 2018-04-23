@@ -21,7 +21,11 @@
       <p>No articles yet.</p>
       {% else %} {% for article in articles %}
       <li class="list-group-item">
-        <a class="text-dark" href="{{url_for('showArticle', topic_id=topic_id, article_id=article.id)}}">&#x2022 {{article.title}}</a>
+        <a class="text-dark" 
+          href="{{url_for('showArticle', topic_id=topic_id, 
+          article_id=article.id)}}">
+          <span class="topic-title-icon" data-feather="file-text"></span> 
+          {{article.title}}</a>
       </li>
       {% endfor %} {% endif %}
     </ul>

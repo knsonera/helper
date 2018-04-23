@@ -5,24 +5,33 @@
   <div class="blog-post">
     <h3 class="topic-title">
       <span>{{article.title}}</span>
-      <a class="text-muted" href="{{url_for('editArticle', topic_id=topic.id, article_id=article.id)}}">
+      <a class="text-muted" href="{{url_for('editArticle', topic_id=topic.id, 
+                                  article_id=article.id)}}">
         <span class="topic-title-icon" data-feather="edit"></span>
       </a>
-      <a class="text-muted" href="{{url_for('deleteArticle', topic_id=topic.id, article_id=article.id)}}">
+      <a class="text-muted" href="{{url_for('deleteArticle', topic_id=topic.id,
+                                  article_id=article.id)}}">
         <span class="topic-title-icon" data-feather="trash-2"></span>
       </a>
     </h3>
-    <p class="blog-post-meta">Created by <span class="text-success">me</span></p>
+    <p class="blog-post-meta">Created by 
+      <span class="text-success">me</span>
+    </p>
 
     <p>{{article.description}}
       <a href="{{article.link}}">Go to source
-                <span class="topic-title-icon" data-feather="external-link"></span>
+                <span class="topic-title-icon" data-feather="external-link">
+                </span>
               </a>
     </p>
-    <button type="button" class="btn btn-secondary" id="article-preview-button"> Preview</button>
-    <a role="button" class="btn btn-secondary" href="{{url_for('showTopic', topic_id=topic.id)}}">Back to topic</a>
+    <button type="button" class="btn btn-secondary" 
+        id="article-preview-button"> Preview</button>
+    <a role="button" class="btn btn-secondary" href="{{url_for('showTopic', 
+                                                      topic_id=topic.id)}}">
+      Back to topic</a>
     <br>
-    <object class="article-preview" type="text/html" id="article-preview" data="{{article.link}}">
+    <object class="article-preview" type="text/html" id="article-preview" 
+        data="{{article.link}}">
             </object>
   </div>
   <!-- /.blog-post -->

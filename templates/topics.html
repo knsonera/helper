@@ -4,9 +4,12 @@
   <h3 class="topic-title">
     <span>Welcome to css overflow</span>
   </h3>
-  <p>This is a portal for everyone who is interested in frontend and backend web technologies</p>
+  <p>This is a portal for everyone who is interested in frontend and backend 
+    web technologies</p>
   {%if 'username' not in session %}
-  <a href="{{url_for('showLogin')}}">Sign in to add new content</a> {% else %}
-  <a href="{{url_for('showProfile')}}">View my profile</a> {% endif %}
+  <a href="{{url_for('showLogin')}}">Sign in to add new content</a> 
+  {% else %}
+  <a href="{{url_for('showProfile')}}">View my profile</a> 
+  {% endif %}
 </main>
 {% endblock %}

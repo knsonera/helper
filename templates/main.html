@@ -1,9 +1,10 @@
-<!doctype html>
+<!doctype html5>
 <html lang="en">
 
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1, 
+    shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="knsonera">
   <link rel="icon" href="/static/favicon.jpg">
@@ -11,28 +12,32 @@
   <title>css overflow</title>
 
   <!-- Bootstrap core CSS -->
-  <link rel="stylesheet" href="https://getbootstrap.com/dist/css/bootstrap.min.css">
+  <link rel="stylesheet" 
+    href="https://getbootstrap.com/dist/css/bootstrap.min.css">
 
   <!-- Custom styles for this template -->
   <link href="/static/styles.css" rel="stylesheet">
 
   <!--LOAD PRE-REQUISITES FOR GOOGLE SIGN IN -->
-  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-  <script src="//apis.google.com/js/platform.js?onload=start">
-
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
   </script>
+  <script src="//apis.google.com/js/platform.js?onload=start"></script>
   <!-- END PRE-REQUISITES FOR GOOGLE SIGN IN -->
 </head>
 
 <body>
   <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
-    <a class="navbar-brand col-md-3 mr-0" href="{{url_for('showTopics')}}">css overflow</a>
-    <!--<input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">-->
+    <a class="navbar-brand col-md-3 mr-0" href="{{url_for('showTopics')}}">
+      css overflow</a>
     <ul class="navbar-nav px-3">
       <li class="nav-item text-nowrap">
         {%if 'username' not in session %}
-        <a class="nav-link" href="{{url_for('showLogin')}}">Sign in</a> {% else %}
-        <a class="nav-link" href="{{url_for('gdisconnect')}}">{{session["username"]}} (Logout)</a> {% endif %}
+        <a class="nav-link" href="{{url_for('showLogin')}}">Sign in
+        </a> 
+        {% else %}
+        <a class="nav-link" href="{{url_for('gdisconnect')}}">
+          {{session["username"]}} (Logout)</a> 
+        {% endif %}
       </li>
     </ul>
   </nav>
