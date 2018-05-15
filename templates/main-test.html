@@ -1,0 +1,64 @@
+<!doctype html5>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, 
+    shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="knsonera">
+  <link rel="icon" href="/var/www/helper/helper/static/favicon.jpg">
+
+  <title>css overflow</title>
+
+  <!-- Bootstrap core CSS -->
+  <link rel="stylesheet" 
+    href="https://getbootstrap.com/dist/css/bootstrap.min.css">
+
+  <!-- Custom styles for this template -->
+  <link href="/var/www/helper/helper/static/styles.css" rel="stylesheet">
+
+</head>
+
+<body>
+  <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
+    <a class="navbar-brand mx-3" href="{{url_for('showTopics')}}">
+      <img class="" src="/static/favicon-w.png" height="20px"> css overflow</a>
+  </nav>
+
+  <div class="container-fluid">
+    <div class="row">
+      <nav class="col-md-3 col-lg-3 col-sm-3 bg-light sidebar kn-sidebar">
+        <div class="sidebar-sticky kn-sidebar">
+            {%if topics %}
+            <ul class="nav flex-column">
+                {% for topic in topics %}
+                <li class="nav-item">
+                    <a class="nav-link" href="{{url_for('showTopics', topic_id=topic.id)}}">
+                      {{topic.name}}
+                    </a>
+                </li>
+                {% endfor %}
+            </ul>
+            {% endif %}
+        </div>
+      </nav>
+    </div>
+  </div>
+
+  <!-- Bootstrap core JavaScript
+    ================================================== -->
+  <!-- Placed at the end of the document so the pages load faster -->
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+  <!-- Icons -->
+  <script src="https://unpkg.com/feather-icons/dist/feather.min.js"></script>
+  <script>
+    feather.replace()
+  </script>
+</body>
+
+</html>

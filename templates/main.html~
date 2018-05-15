@@ -7,13 +7,13 @@
     shrink-to-fit=no">
   <meta name="description" content="">
   <meta name="author" content="knsonera">
-  <link rel="icon" href="/static/favicon.jpg">
+  <link rel="icon" href="/var/www/helper/helper/static/favicon.jpg">
 
   <title>css overflow</title>
 
   <!-- Bootstrap core CSS -->
   <link rel="stylesheet" 
-    href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css">
+    href="https://getbootstrap.com/dist/css/bootstrap.min.css">
 
   <!-- Custom styles for this template -->
   <link href="/static/styles.css" rel="stylesheet">

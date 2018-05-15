@@ -13,7 +13,7 @@ from sqlalchemy.orm import sessionmaker
 from models import Base, Topic, Article, User
 
 from flask import session as login_session
-from sqlalchemy.pool import StaticPool
+
 # Add OAuth operations
 from oauth2client.client import flow_from_clientsecrets
 from oauth2client.client import FlowExchangeError
@@ -21,9 +21,7 @@ import httplib2
 from flask import make_response
 
 # Create session, connect to db
-
-data = 'sqlite:////var/www/helper/helper/helperwithusers.db'
-engine = create_engine(data, connect_args={'check_same_thread': False}, poolclass=StaticPool)
+engine = create_engine('sqlite:///helperwithusers.db')
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
@@ -32,7 +30,7 @@ app = Flask(__name__)
 
 # Load client_id for google oauth
 CLIENT_ID = json.loads(
-    open('/var/www/helper/helper/client_secrets.json', 'r').read())['web']['client_id']
+    open('client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "css overflow app"
 
 
@@ -296,7 +294,7 @@ def gconnect():
 
     try:
         # Upgrade the authorization code into a credentials object
-        oauth_flow = flow_from_clientsecrets('/var/www/helper/helper/client_secrets.json', scope='')
+        oauth_flow = flow_from_clientsecrets('client_secrets.json', scope='')
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
         print credentials
@@ -451,8 +449,7 @@ def getUserId(email):
     except:
         return None
 
-app.secret_key = 'jdshfsklfhjdsflehfjLKJHBLKHNN*YI*YFNO&Iry3noi837rhyg&*&*$#*#*YR&*O#YR#Y$(POUFHLUHFDY'
-
 if __name__ == '__main__':
+    app.secret_key = 'super_secret_key'
     app.debug = True
     app.run(host='0.0.0.0', port=5000)

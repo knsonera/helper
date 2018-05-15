@@ -1,11 +1,19 @@
+import random
 import string
 from sqlalchemy import Column, ForeignKey, Integer, String
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import relationship
 from sqlalchemy import create_engine
-from sqlalchemy.pool import StaticPool
+from passlib.apps import custom_app_context as pwd_context
+from itsdangerous import(TimedJSONWebSignatureSerializer as Serializer,
+                         BadSignature, SignatureExpired)
+
 
 Base = declarative_base()
+
+secret_key = ''.join(random.choice(string.ascii_uppercase + string.digits)
+                     for x in xrange(32))
+
 
 class User(Base):
     __tablename__ = 'user'
@@ -66,8 +74,6 @@ class Article(Base):
         }
 
 
-engine = create_engine('sqlite:////var/www/helper/helper/helperwithusers.db', connect_args={'check_same_thread': False},
-                    poolclass=StaticPool)
+engine = create_engine('sqlite:////var/www/helper/helper/helperwithusers.db', connect_args={'check_same_thread':False})
 
 Base.metadata.create_all(engine)
-
