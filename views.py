@@ -28,7 +28,7 @@ Base.metadata.bind = engine
 DBSession = sessionmaker(bind=engine)
 session = DBSession()
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 
 # Load client_id for google oauth
 CLIENT_ID = json.loads(
@@ -163,12 +163,12 @@ def showArticle(topic_id, article_id):
     author_name = author.name
     if 'username' in login_session:
         if login_session['user_id'] == article.user_id:
-            return render_template('article.html', article=article, 
+            return render_template('article.html', article=article,
                                    topic=topic, topics=topics)
         else:
             # hide edit and delete buttons if user is author of this article
             return render_template('publicArticle.html', article=article,
-                                   topic=topic, topics=topics, 
+                                   topic=topic, topics=topics,
                                    author=author_name)
     else:
         return render_template('publicArticle.html', article=article,
@@ -427,6 +427,11 @@ def gdisconnect():
 def showUser(user_id):
     user = session.query(User).filter_by(id=user_id).one()
     return jsonify(User=user.serialize)
+
+
+@app.route('/robots.txt')
+def getRobotsTxt():
+    return send_from_directory(app.static_folder, request.path[1:])
 
 
 def createUser(login_session):
