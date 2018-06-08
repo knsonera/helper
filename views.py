@@ -274,8 +274,6 @@ def showProfile():
         email = login_session['email']
         user_id = getUserId(email)
         articles = session.query(Article).filter_by(user_id=user_id).all()
-        print articles
-        print user_id
         return render_template('userInfo.html', topics=topics,
                                articles=articles, name=name, email=email,
                                picture=picture)
@@ -299,9 +297,6 @@ def gconnect():
         oauth_flow = flow_from_clientsecrets('/var/www/helper/helper/client_secrets.json', scope='')
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
-        print credentials
-        print credentials.access_token
-        print credentials.id_token['sub']
     except FlowExchangeError:
         response = make_response(
             json.dumps('Failed to upgrade the authorization code.'), 401)
