@@ -3,6 +3,7 @@
 This is a web app for creating a catalog of articles on different topics.
 Initially, it was created to help beginner programmers to collect useful links,
 but potentially this app isn't limited to tech topics.
+New features are coming soon, stay tuned!
 
 ## What's inside:
 - Views Initialization File - views.py
