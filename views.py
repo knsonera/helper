@@ -251,7 +251,7 @@ def deleteArticle(topic_id, article_id):
 # List of topics (JSON)
 @app.route('/topics/all/JSON')
 def topicsJSON():
-    topics = session.query(Topic).all()
+    topics = session.query(Topic).order_by(Topic.name)
     return jsonify(Topics=[i.serialize for i in topics])
 
 # List of user topics (JSON)
@@ -293,7 +293,7 @@ def showProfile():
     topics = []
     if 'username' in login_session:
         userId = getUserId(login_session['email'])
-        topics = session.query(Topic).filter_by(user_id=userId).all()
+        topics = session.query(Topic).filter_by(user_id=userId).order_by(Topic.name)
         name = login_session['username']
         picture = login_session['picture']
         email = login_session['email']
