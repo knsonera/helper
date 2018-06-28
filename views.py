@@ -131,6 +131,11 @@ def deleteTopic(topic_id):
             }</script><body onload='myFunction()'>"
 
     if request.method == 'POST':
+        articles = session.query(Article).filter_by(topic_id=topic_to_delete.id).all()
+        if articles[0]:
+            for a in articles:
+                session.delete(a)
+                session.commit()
         session.delete(topic_to_delete)
         session.commit()
         # TODO: flash on success?
