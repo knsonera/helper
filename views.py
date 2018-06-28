@@ -38,12 +38,18 @@ APPLICATION_NAME = "css overflow app"
 
 # Main page
 @app.route('/')
-@app.route('/topics/')
+@app.route('/topics/my/')
 def showTopics():
     if 'username' not in login_session:
-        return redirect('/login')
+        return redirect('/topics/featured/')
     userId = getUserId(login_session['email'])
     topics = session.query(Topic).filter_by(user_id=userId).order_by(Topic.name)
+    return render_template('topics.html', topics=topics)
+
+
+@app.route('/topics/featured/')
+def showFeaturedTopics():
+    topics = session.query(Topic).filter_by(user_id=1).order_by(Topic.name)
     return render_template('topics.html', topics=topics)
 
 
