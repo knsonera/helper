@@ -73,13 +73,11 @@ def newTopic():
 # Show all topics
 @app.route('/topics/<int:topic_id>/')
 def showTopic(topic_id):
-    if 'username' not in login_session:
-        return redirect('/login')
     topic = session.query(Topic).filter_by(id=topic_id).one()
-    userId = getUserId(login_session['email'])
-    topics = session.query(Topic).filter_by(user_id=userId).order_by(Topic.name)
     articles = session.query(Article).filter_by(topic_id=topic_id).all()
     if 'username' in login_session:
+        userId = getUserId(login_session['email'])
+        topics = session.query(Topic).filter_by(user_id=userId).order_by(Topic.name)
         if login_session['user_id'] == topic.user_id:
             return render_template('topic.html', topic=topic, topics=topics,
                                    articles=articles, topic_id=topic_id)
@@ -89,6 +87,7 @@ def showTopic(topic_id):
                                    topics=topics, articles=articles,
                                    topic_id=topic_id)
     else:
+        topics = session.query(Topic).filter_by(user_id=1).order_by(Topic.name)
         return render_template('publicTopic.html', topic=topic,
                                    topics=topics, articles=articles,
                                    topic_id=topic_id)
@@ -177,12 +176,12 @@ def newArticle(topic_id):
 @app.route('/topics/<int:topic_id>/articles/<int:article_id>/')
 def showArticle(topic_id, article_id):
     topic = session.query(Topic).filter_by(id=topic_id).one()
-    userId = getUserId(login_session['email'])
-    topics = session.query(Topic).filter_by(user_id=userId).order_by(Topic.name)
     article = session.query(Article).filter_by(id=article_id).one()
     author = session.query(User).filter_by(id=article.user_id).one()
     author_name = author.name
     if 'username' in login_session:
+        userId = getUserId(login_session['email'])
+        topics = session.query(Topic).filter_by(user_id=userId).order_by(Topic.name)
         if login_session['user_id'] == article.user_id:
             return render_template('article.html', article=article,
                                    topic=topic, topics=topics)
@@ -192,6 +191,7 @@ def showArticle(topic_id, article_id):
                                    topic=topic, topics=topics,
                                    author=author_name)
     else:
+        topics = session.query(Topic).filter_by(user_id=1).order_by(Topic.name)
         return render_template('publicArticle.html', article=article,
                                topic=topic, topics=topics, author=author_name)
 
@@ -285,7 +285,7 @@ def articleJSON(topic_id, article_id):
 # Login page
 @app.route('/login')
 def showLogin():
-    topics = []
+    topics = session.query(Topic).filter_by(user_id=1).order_by(Topic.name)
     # generate random state
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in range(32))
@@ -296,7 +296,7 @@ def showLogin():
 # Profile page
 @app.route('/profile')
 def showProfile():
-    topics = []
+    topics = session.query(Topic).filter_by(user_id=1).order_by(Topic.name)
     if 'username' in login_session:
         userId = getUserId(login_session['email'])
         topics = session.query(Topic).filter_by(user_id=userId).order_by(Topic.name)
