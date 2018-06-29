@@ -32,7 +32,7 @@ app = Flask(__name__, static_folder='static')
 
 # Load client_id for google oauth
 CLIENT_ID = json.loads(
-    open('client_secrets.json', 'r').read())['web']['client_id']
+    open('/var/www/helper/helper/client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "css overflow app"
 
 
@@ -348,7 +348,7 @@ def gconnect():
 
     try:
         # Upgrade the authorization code into a credentials object
-        oauth_flow = flow_from_clientsecrets('client_secrets.json', scope='')
+        oauth_flow = flow_from_clientsecrets('/var/www/helper/helper/client_secrets.json', scope='')
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
