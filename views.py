@@ -166,7 +166,8 @@ def deleteTopic(topic_id):
 def newArticle(topic_id):
     if 'username' not in login_session:
         return redirect('/login')
-    if login_session['user_id'] != topic_id.user_id:
+    topic = session.query(Topic).filter_by(id=topic_id).one()
+    if login_session['user_id'] != topic.user_id:
         return "<script>function myFunction() {\
                 alert('You are not authorized to add articles to this topic.');\
             }</script><body onload='myFunction()'>"
