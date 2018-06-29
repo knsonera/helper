@@ -50,7 +50,7 @@ def showTopics():
 @app.route('/topics/featured/')
 def showFeaturedTopics():
     topics = session.query(Topic).filter_by(user_id=1).order_by(Topic.name)
-    return render_template('topics.html', topics=topics)
+    return render_template('topicsFeatured.html', topics=topics)
 
 
 # Create new topic
@@ -70,7 +70,7 @@ def newTopic():
         return render_template('newTopic.html', topics=topics)
 
 
-# Show all topics
+# Show topic
 @app.route('/topics/<int:topic_id>/')
 def showTopic(topic_id):
     topic = session.query(Topic).filter_by(id=topic_id).one()
@@ -91,6 +91,17 @@ def showTopic(topic_id):
         return render_template('publicTopic.html', topic=topic,
                                    topics=topics, articles=articles,
                                    topic_id=topic_id)
+
+
+# Show featured topic
+@app.route('/topics/featured/<int:topic_id>/')
+def showFeaturedTopic(topic_id):
+    topic = session.query(Topic).filter_by(id=topic_id).one()
+    articles = session.query(Article).filter_by(topic_id=topic_id).all()
+    topics = session.query(Topic).filter_by(user_id=1).order_by(Topic.name)
+    return render_template('topicFeatured.html', topic=topic,
+                            topics=topics, articles=articles,
+                            topic_id=topic_id)
 
 
 # Edit topic
@@ -193,6 +204,18 @@ def showArticle(topic_id, article_id):
     else:
         topics = session.query(Topic).filter_by(user_id=1).order_by(Topic.name)
         return render_template('publicArticle.html', article=article,
+                               topic=topic, topics=topics, author=author_name)
+
+
+# Featured article page
+@app.route('/topics/<int:topic_id>/articles/featured/<int:article_id>/')
+def showFeaturedArticle(topic_id, article_id):
+    topic = session.query(Topic).filter_by(id=topic_id).one()
+    article = session.query(Article).filter_by(id=article_id).one()
+    author = session.query(User).filter_by(id=article.user_id).one()
+    author_name = author.name
+    topics = session.query(Topic).filter_by(user_id=1).order_by(Topic.name)
+    return render_template('articleFeatured.html', article=article,
                                topic=topic, topics=topics, author=author_name)
 
 
