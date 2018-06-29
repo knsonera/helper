@@ -97,7 +97,7 @@
                 if (result) {
                   $('#result').html(result + '</br> Redirecting...')
                   setTimeout(function () {
-                    window.location.href = "/topics/";
+                    window.location.href = "/topics/my/";
                   }, 2000);
                 } else if (authResult['error']) {
                   console.log('There was an error: ' + authResult['error']);

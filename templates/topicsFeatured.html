@@ -1,4 +1,4 @@
-{% extends "main.html" %} {% block content %} {% include "sidebar.html" %}
+{% extends "main.html" %} {% block content %} {% include "sidebarFeatured.html" %}
 <main role="main" class="col-md-9 col-lg-9 pt-3 px-3 kn-main">
   <!-- Main section -->
   <h3 class="article-title">
@@ -13,6 +13,6 @@
   {% endif %}
   <br>
   <br>
-  <a href="{{url_for('showFeaturedTopics')}}">View featured topics</a> 
+  <a href="{{url_for('showTopics')}}">View my topics</a> 
 </main>
 {% endblock %}

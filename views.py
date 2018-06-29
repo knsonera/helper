@@ -32,16 +32,25 @@ app = Flask(__name__, static_folder='static')
 
 # Load client_id for google oauth
 CLIENT_ID = json.loads(
-    open('/var/www/helper/helper/client_secrets.json', 'r').read())['web']['client_id']
+    open('client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "css overflow app"
 
 
 # Main page
 @app.route('/')
-@app.route('/topics/')
+@app.route('/topics/my/')
 def showTopics():
-    topics = session.query(Topic).order_by(Topic.name)
+    if 'username' not in login_session:
+        return redirect('/topics/featured/')
+    userId = getUserId(login_session['email'])
+    topics = session.query(Topic).filter_by(user_id=userId).order_by(Topic.name)
     return render_template('topics.html', topics=topics)
+
+
+@app.route('/topics/featured/')
+def showFeaturedTopics():
+    topics = session.query(Topic).filter_by(user_id=1).order_by(Topic.name)
+    return render_template('topicsFeatured.html', topics=topics)
 
 
 # Create new topic
@@ -49,25 +58,26 @@ def showTopics():
 def newTopic():
     if 'username' not in login_session:
         return redirect('/login')
-    user_id = getUserId(login_session['email'])
+    userId = getUserId(login_session['email'])
     if request.method == 'POST':
         newTopic = Topic(name=request.form['name'],
-                         user_id=user_id)
+                         user_id=userId)
         session.add(newTopic)
         session.commit()
         return redirect(url_for('showTopic', topic_id=newTopic.id))
     else:
-        topics = session.query(Topic).order_by(Topic.name)
+        topics = session.query(Topic).filter_by(user_id=userId).order_by(Topic.name)
         return render_template('newTopic.html', topics=topics)
 
 
-# Show all topics
+# Show topic
 @app.route('/topics/<int:topic_id>/')
 def showTopic(topic_id):
     topic = session.query(Topic).filter_by(id=topic_id).one()
-    topics = session.query(Topic).order_by(Topic.name)
     articles = session.query(Article).filter_by(topic_id=topic_id).all()
     if 'username' in login_session:
+        userId = getUserId(login_session['email'])
+        topics = session.query(Topic).filter_by(user_id=userId).order_by(Topic.name)
         if login_session['user_id'] == topic.user_id:
             return render_template('topic.html', topic=topic, topics=topics,
                                    articles=articles, topic_id=topic_id)
@@ -77,9 +87,21 @@ def showTopic(topic_id):
                                    topics=topics, articles=articles,
                                    topic_id=topic_id)
     else:
+        topics = session.query(Topic).filter_by(user_id=1).order_by(Topic.name)
         return render_template('publicTopic.html', topic=topic,
                                    topics=topics, articles=articles,
                                    topic_id=topic_id)
+
+
+# Show featured topic
+@app.route('/topics/featured/<int:topic_id>/')
+def showFeaturedTopic(topic_id):
+    topic = session.query(Topic).filter_by(id=topic_id).one()
+    articles = session.query(Article).filter_by(topic_id=topic_id).all()
+    topics = session.query(Topic).filter_by(user_id=1).order_by(Topic.name)
+    return render_template('topicFeatured.html', topic=topic,
+                            topics=topics, articles=articles,
+                            topic_id=topic_id)
 
 
 # Edit topic
@@ -88,7 +110,8 @@ def editTopic(topic_id):
     if 'username' not in login_session:
         return redirect('/login')
     edited_topic = session.query(Topic).filter_by(id=topic_id).one()
-    topics = session.query(Topic).order_by(Topic.name)
+    userId = getUserId(login_session['email'])
+    topics = session.query(Topic).filter_by(user_id=userId).order_by(Topic.name)
     # Check if user is allowed to modify topic
     if login_session['user_id'] != edited_topic.user_id:
         return "<script>function myFunction() { \
@@ -113,7 +136,8 @@ def editTopic(topic_id):
 def deleteTopic(topic_id):
     if 'username' not in login_session:
         return redirect('/login')
-    topics = session.query(Topic).order_by(Topic.name)
+    userId = getUserId(login_session['email'])
+    topics = session.query(Topic).filter_by(user_id=userId).order_by(Topic.name)
     topic_to_delete = session.query(Topic).filter_by(id=topic_id).one()
     # Check if user is allowed to delete topic, show js alert
     if login_session['user_id'] != topic_to_delete.user_id:
@@ -123,6 +147,11 @@ def deleteTopic(topic_id):
             }</script><body onload='myFunction()'>"
 
     if request.method == 'POST':
+        articles = session.query(Article).filter_by(topic_id=topic_to_delete.id).all()
+        if articles[0]:
+            for a in articles:
+                session.delete(a)
+                session.commit()
         session.delete(topic_to_delete)
         session.commit()
         # TODO: flash on success?
@@ -148,7 +177,8 @@ def newArticle(topic_id):
         # TODO: flash message on success?
         return redirect(url_for('showTopic', topic_id=topic_id))
     else:
-        topics = session.query(Topic).order_by(Topic.name)
+        userId = getUserId(login_session['email'])
+        topics = session.query(Topic).filter_by(user_id=userId).order_by(Topic.name)
         return render_template('newArticle.html', topics=topics,
                                topic_id=topic_id)
 
@@ -157,11 +187,12 @@ def newArticle(topic_id):
 @app.route('/topics/<int:topic_id>/articles/<int:article_id>/')
 def showArticle(topic_id, article_id):
     topic = session.query(Topic).filter_by(id=topic_id).one()
-    topics = session.query(Topic).order_by(Topic.name)
     article = session.query(Article).filter_by(id=article_id).one()
     author = session.query(User).filter_by(id=article.user_id).one()
     author_name = author.name
     if 'username' in login_session:
+        userId = getUserId(login_session['email'])
+        topics = session.query(Topic).filter_by(user_id=userId).order_by(Topic.name)
         if login_session['user_id'] == article.user_id:
             return render_template('article.html', article=article,
                                    topic=topic, topics=topics)
@@ -171,7 +202,20 @@ def showArticle(topic_id, article_id):
                                    topic=topic, topics=topics,
                                    author=author_name)
     else:
+        topics = session.query(Topic).filter_by(user_id=1).order_by(Topic.name)
         return render_template('publicArticle.html', article=article,
+                               topic=topic, topics=topics, author=author_name)
+
+
+# Featured article page
+@app.route('/topics/<int:topic_id>/articles/featured/<int:article_id>/')
+def showFeaturedArticle(topic_id, article_id):
+    topic = session.query(Topic).filter_by(id=topic_id).one()
+    article = session.query(Article).filter_by(id=article_id).one()
+    author = session.query(User).filter_by(id=article.user_id).one()
+    author_name = author.name
+    topics = session.query(Topic).filter_by(user_id=1).order_by(Topic.name)
+    return render_template('articleFeatured.html', article=article,
                                topic=topic, topics=topics, author=author_name)
 
 
@@ -182,7 +226,8 @@ def editArticle(topic_id, article_id):
     if 'username' not in login_session:
         return redirect('/login')
     edited_article = session.query(Article).filter_by(id=article_id).one()
-    topics = session.query(Topic).order_by(Topic.name)
+    userId = getUserId(login_session['email'])
+    topics = session.query(Topic).filter_by(user_id=userId).order_by(Topic.name)
     topic = session.query(Topic).filter_by(id=topic_id).one()
     # check if user if allowed to modify the article
     if login_session['user_id'] != edited_article.user_id:
@@ -212,7 +257,8 @@ def deleteArticle(topic_id, article_id):
     if 'username' not in login_session:
         return redirect('/login')
     article_to_delete = session.query(Article).filter_by(id=article_id).one()
-    topics = session.query(Topic).order_by(Topic.name)
+    userId = getUserId(login_session['email'])
+    topics = session.query(Topic).filter_by(user_id=userId).order_by(Topic.name)
     topic = session.query(Topic).filter_by(id=topic_id).one()
     # check if user is allowed to delete article
     if login_session['user_id'] != article_to_delete.user_id:
@@ -232,9 +278,15 @@ def deleteArticle(topic_id, article_id):
 
 # API endpoints
 # List of topics (JSON)
-@app.route('/topics/JSON')
+@app.route('/topics/all/JSON')
 def topicsJSON():
-    topics = session.query(Topic).all()
+    topics = session.query(Topic).order_by(Topic.name)
+    return jsonify(Topics=[i.serialize for i in topics])
+
+# List of user topics (JSON)
+@app.route('/topics/<int:user_id>/JSON')
+def userTopicsJSON(user_id):
+    topics = session.query(Topic).filter_by(user_id=user_id).order_by(Topic.name)
     return jsonify(Topics=[i.serialize for i in topics])
 
 
@@ -256,7 +308,7 @@ def articleJSON(topic_id, article_id):
 # Login page
 @app.route('/login')
 def showLogin():
-    topics = session.query(Topic).all()
+    topics = session.query(Topic).filter_by(user_id=1).order_by(Topic.name)
     # generate random state
     state = ''.join(random.choice(string.ascii_uppercase + string.digits)
                     for x in range(32))
@@ -267,8 +319,10 @@ def showLogin():
 # Profile page
 @app.route('/profile')
 def showProfile():
-    topics = session.query(Topic).all()
+    topics = session.query(Topic).filter_by(user_id=1).order_by(Topic.name)
     if 'username' in login_session:
+        userId = getUserId(login_session['email'])
+        topics = session.query(Topic).filter_by(user_id=userId).order_by(Topic.name)
         name = login_session['username']
         picture = login_session['picture']
         email = login_session['email']
@@ -294,7 +348,7 @@ def gconnect():
 
     try:
         # Upgrade the authorization code into a credentials object
-        oauth_flow = flow_from_clientsecrets('/var/www/helper/helper/client_secrets.json', scope='')
+        oauth_flow = flow_from_clientsecrets('client_secrets.json', scope='')
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
