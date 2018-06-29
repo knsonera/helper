@@ -32,7 +32,7 @@ app = Flask(__name__, static_folder='static')
 
 # Load client_id for google oauth
 CLIENT_ID = json.loads(
-    open('/var/www/helper/helper/client_secrets.json', 'r').read())['web']['client_id']
+    open('./client_secrets.json', 'r').read())['web']['client_id']
 APPLICATION_NAME = "css overflow app"
 
 
@@ -148,7 +148,7 @@ def deleteTopic(topic_id):
 
     if request.method == 'POST':
         articles = session.query(Article).filter_by(topic_id=topic_to_delete.id).all()
-        if articles[0]:
+        if articles and articles[0]:
             for a in articles:
                 session.delete(a)
                 session.commit()
@@ -187,7 +187,7 @@ def newArticle(topic_id):
 @app.route('/topics/<int:topic_id>/articles/<int:article_id>/')
 def showArticle(topic_id, article_id):
     topic = session.query(Topic).filter_by(id=topic_id).one()
-    article = session.query(Article).filter_by(id=article_id).one()
+    article = session.query(Article).filter_by(topic_id=topic_id).filter_by(id=article_id).one()
     author = session.query(User).filter_by(id=article.user_id).one()
     author_name = author.name
     if 'username' in login_session:
@@ -348,7 +348,7 @@ def gconnect():
 
     try:
         # Upgrade the authorization code into a credentials object
-        oauth_flow = flow_from_clientsecrets('/var/www/helper/helper/client_secrets.json', scope='')
+        oauth_flow = flow_from_clientsecrets('./client_secrets.json', scope='')
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
@@ -433,7 +433,10 @@ def gconnect():
 # Disconnect (Google OAuth)
 @app.route("/gdisconnect")
 def gdisconnect():
-    topics = session.query(Topic).order_by(Topic.name)
+    if 'username' not in login_session:
+        return redirect('/login')
+    userId = getUserId(login_session['email'])
+    topics = session.query(Topic).filter_by(user_id=userId).order_by(Topic.name)
     access_token = login_session.get('access_token')
     if access_token is None:
         print 'Access Token is None'
@@ -448,6 +451,20 @@ def gdisconnect():
     h = httplib2.Http()
     result = h.request(url, 'GET')[0]
 
+    del login_session['access_token']
+    del login_session['gplus_id']
+    del login_session['username']
+    del login_session['email']
+    del login_session['picture']
+    del login_session['user_id']
+
+    response = make_response(json.dumps('Disconnected.'), 200)
+    response.headers['Content-Type'] = 'application/json'
+    status = "Successfully disconnected."
+    return render_template('logout.html', topics=topics,
+                               user_status=status)
+
+'''
     if result['status'] == '200':
         del login_session['access_token']
         del login_session['gplus_id']
@@ -467,8 +484,7 @@ def gdisconnect():
         )
         response.headers['Content-Type'] = 'application/json'
         status = "Failed to revoke token for given user."
-        return render_template('logout.html', topics=topics,
-                               user_status=status)
+'''
 
 
 # API Endpoint: user info (JSON)

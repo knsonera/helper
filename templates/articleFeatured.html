@@ -16,13 +16,8 @@
                 </span>
               </a>
     </p>
-    <button type="button" class="btn btn-secondary" 
-      id="article-preview-button"> Preview</button>
     <a role="button" class="btn btn-secondary" 
       href="{{url_for('showFeaturedTopic', topic_id=topic.id)}}">Back to topic</a>
-    <br>
-    <object class="article-preview" type="text/html" id="article-preview" 
-      data="{{article.link}}"></object>
   </div>
 </main>
 {% endblock %}
