@@ -166,6 +166,10 @@ def deleteTopic(topic_id):
 def newArticle(topic_id):
     if 'username' not in login_session:
         return redirect('/login')
+    if login_session['user_id'] != topic_id.user_id:
+        return "<script>function myFunction() {\
+                alert('You are not authorized to add articles to this topic.');\
+            }</script><body onload='myFunction()'>"
     if request.method == 'POST':
         user_id = getUserId(login_session['email'])
         new_article = Article(title=request.form['name'],
