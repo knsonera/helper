@@ -17,6 +17,7 @@
 
   <!-- Custom styles for this template -->
   <link href="/static/styles.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Titillium+Web:700" rel="stylesheet">
 
   <!--LOAD PRE-REQUISITES FOR GOOGLE SIGN IN -->
   <script src="//ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js">
@@ -28,7 +29,7 @@
 <body>
   <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0">
     <a class="navbar-brand mx-3" href="{{url_for('showTopics')}}">
-      <img class="" src="/static/favicon-w.png" height="20px"> css overflow</a>
+      <img class="" src="/static/favicon-w.png" height="20px"> <span class="pl-2">css overflow</span></a>
     <ul class="navbar-nav px-3">
       <li class="nav-item">
         {%if 'username' not in session %}
